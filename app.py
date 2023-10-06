@@ -3,11 +3,12 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # home
-@app.route('/',)
+@app.route('/')
 def index():
-    return {'res': "welcome to the books API.",
-           "get books endpoint": "/api/books"
-           }
+    return jsonify( {
+          'res': 'welcome to the books API.',
+           'get books endpoint': '/api/books'
+           })
 
 
 books_list = {
@@ -31,7 +32,7 @@ books_list = {
 @app.route('/api/books', methods=["GET", "POST"])
 def handle_books():
   if request.method == "GET":
-    return {'res': books_list}
+    return jsonify( {'res': books_list} )
   else:
     sent_data = request.json
     book_array = list(books_list.items())
@@ -54,7 +55,7 @@ def one_book(id):
     return {"res": "livre not found" }, 404
   else:
     if request.method == "GET":
-        return { "res": books_list.get(id) }, 200
+        return jsonify( { "res": books_list.get(id) }), 200
     elif request.method == "PUT":
         new_title = request.json.get('title') 
         new_year = request.json.get('year')
